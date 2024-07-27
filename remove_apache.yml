@@ -1,0 +1,25 @@
+--- 
+
+# This playbook installs Apache on all hosts in the inventory file.
+- hosts: all
+  become: yes
+  tasks:
+    # In Ansible, the update_cache parameter is used within the apt module
+    # to update the package index cache before installing packages. 
+    # This ensures that you have the latest information about available packages and their versions.
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install Apache
+      apt:
+        name: apache2
+        # make sure the version is the latest
+        state: absent
+    # configure php support apache
+    - name: add php support for apache
+      apt:
+        name: libapache2-mod-php
+        # make sure the version is the latest
+        state: absent
+        
