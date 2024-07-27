@@ -10,16 +10,49 @@
     - name: Update apt cache
       apt:
         update_cache: yes
+      when: ansible_distribution == 'Ubuntu'
 
     - name: Install Apache
       apt:
         name: apache2
         # make sure the version is the latest
         state: latest
+      when: ansible_distribution == 'Ubuntu'
     # configure php support apache
     - name: add php support for apache
       apt:
         name: libapache2-mod-php
         # make sure the version is the latest
         state: latest
+      when: ansible_distribution == 'Ubuntu'
+    # the same for centos
+    - name: Update yum cache Centos
+      yum:
+        update_cache: yes
+      when: ansible_distribution == 'CentOS'
+    - name: Install Apache Centos
+      yum:
+        name: httpd
+        state: latest
+      when: ansible_distribution == 'CentOS'
+    - name: add php support for apache Centos
+      yum:
+        name: php
+        state: latest
+      when: ansible_distribution == 'CentOS'
+    # for centos we need to start the service
+    - name: Start Apache Centos
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+      when: ansible_distribution == 'CentOS'
+    # playbook same as sudo firewall-cmd --permanent --add-port=80/tcp
+    - name: Open port 80
+      firewalld:
+        port: 80/tcp
+        permanent: yes
+        state: enabled
+        immediate: yes
+      when: ansible_distribution == 'CentOS'
         
