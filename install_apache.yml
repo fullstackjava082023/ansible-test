@@ -4,23 +4,31 @@
 - hosts: all
   become: yes
   tasks:
-    - name: Install Apache
-      apt:
+    - name: install apache and php with package
+      package:
         name: 
           - "{{ apache }}"
           - "{{ php }}"
-        # make sure the version is the latest
-        state: latest
-        update_cache: yes
-      when: ansible_distribution == 'Ubuntu'
-    - name: Install Apache Centos
-      yum:
-        name: 
-          -  "{{ apache }}"
-          -  "{{ php }}"
-        state: latest
-        update_cache: yes
-      when: ansible_distribution == 'CentOS'
+        state: present
+      
+
+    # - name: Install Apache      
+    #   apt:
+    #     name: 
+    #       - "{{ apache }}"
+    #       - "{{ php }}"
+    #     # make sure the version is the latest
+    #     state: latest
+    #     update_cache: yes
+    #   when: ansible_distribution == 'Ubuntu'
+    # - name: Install Apache Centos
+    #   yum:
+    #     name: 
+    #       -  "{{ apache }}"
+    #       -  "{{ php }}"
+    #     state: latest
+    #     update_cache: yes
+    #   when: ansible_distribution == 'CentOS'
    
     - name: Start Apache Centos
       service:
