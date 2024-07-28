@@ -1,7 +1,7 @@
 --- 
 
 # This playbook installs Apache on all hosts in the inventory file.
-- hosts: all
+- hosts: webservers
   become: yes
   tasks:
     - name: install apache and php with package
@@ -11,25 +11,6 @@
           - "{{ php }}"
         state: present
       
-
-    # - name: Install Apache      
-    #   apt:
-    #     name: 
-    #       - "{{ apache }}"
-    #       - "{{ php }}"
-    #     # make sure the version is the latest
-    #     state: latest
-    #     update_cache: yes
-    #   when: ansible_distribution == 'Ubuntu'
-    # - name: Install Apache Centos
-    #   yum:
-    #     name: 
-    #       -  "{{ apache }}"
-    #       -  "{{ php }}"
-    #     state: latest
-    #     update_cache: yes
-    #   when: ansible_distribution == 'CentOS'
-   
     - name: Start Apache Centos
       service:
         name: "{{ apache }}"
@@ -40,8 +21,8 @@
     - name: Open port 80
       firewalld:
         port: 80/tcp
-        # permanent: yes
+        permanent: yes
         state: enabled
-        # immediate: yes
+        immediate: yes
       when: ansible_distribution == 'CentOS'
         
