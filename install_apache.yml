@@ -25,4 +25,21 @@
         state: enabled
         immediate: yes
       when: ansible_distribution == 'CentOS'
+    
+    - name: copy default_html.html
+      copy:
+        src: default_html.html
+        dest: /var/www/html/index.html
+        # notify: restart apache
+        owner: root
+        group: root
+        mode: 0644 # read and write for owner, read for group and others
         
+- hosts: others
+  become: yes
+  tasks:
+  - name: install mariadb
+    package:
+      name: mariadb-server
+      state: present
+      
